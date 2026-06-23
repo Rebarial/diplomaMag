@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  django:
+    build: ./server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./server:/app      
+      - ./server/media:/app/media
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
